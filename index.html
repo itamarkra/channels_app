@@ -4,122 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Itamarkra Channels</title>
-  <style>
-
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    direction: rtl;
-    background: #f0f4f8;
-    color: #333;
-    margin: 0;
-    padding: 0 20px 40px 20px;
-  }
-
-  h1, h2, h3 {
-    color: #1a73e8;
-    margin-bottom: 15px;
-  }
-
-  #searchCategories {
-    margin: 30px 0 15px 0;
-  }
-
-  label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  select, input[type="text"], textarea {
-    width: 100%;
-    max-width: 400px;
-    padding: 8px 10px;
-    margin-top: 4px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    border: 1.5px solid #ccc;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-  }
-
-  select:focus, input[type="text"]:focus, textarea:focus {
-    outline: none;
-    border-color: #1a73e8;
-    box-shadow: 0 0 6px rgba(26, 115, 232, 0.5);
-  }
-
-  button {
-    background-color: #1a73e8;
-    color: white;
-    font-weight: 700;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.25s ease;
-    margin-top: 10px;
-  }
-
-  button:hover {
-    background-color: #155bb5;
-  }
-
-  #channelsContainer > div {
-    background: white;
-    border-radius: 10px;
-    padding: 15px 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-  }
-
-  .channel-item {
-    cursor: pointer;
-    margin: 8px 0;
-    padding: 10px 15px;
-    background-color: #e3f2fd;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-    user-select: none;
-  }
-
-  .channel-item:hover {
-    background-color: #bbdefb;
-  }
-
-  #channelDetails {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 3px 9px rgb(0 0 0 / 0.2);
-    max-width: 500px;
-  }
-
-  #channelInfo p {
-    line-height: 1.5;
-    margin-bottom: 10px;
-  }
-
-  a {
-    color: #1a73e8;
-    text-decoration: none;
-    word-break: break-all;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-
-  /* Form container */
-  #addChannelForm {
-    background: white;
-    padding: 20px;
-    margin-top: 15px;
-    border-radius: 10px;
-    max-width: 500px;
-    box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
-  }
-
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>ערוצי Itamarkra</h1>
@@ -127,7 +12,7 @@
   <div id="searchCategories">
     <label for="categorySelect">חפש לפי קטגוריה:</label>
     <select id="categorySelect">
-      <option value="">-- בחר קטגוריה --</option>
+      <option value="">-- כל הקטגוריות --</option>
     </select>
   </div>
 
@@ -136,25 +21,7 @@
     <div id="channelsContainer"></div>
   </div>
 
-  <div id="channelDetails" style="display:none;">
-    <h2>פרטי ערוץ</h2>
-    <div id="channelInfo"></div>
-    <button onclick="closeDetails()">סגור</button>
-  </div>
-
-  <div id="addChannelSection" style="margin: 20px;">
-    <button onclick="toggleAddChannelForm()">הוסף ערוץ</button>
-    <div id="addChannelForm" style="display:none;">
-      <h3>הוסף ערוץ חדש</h3>
-      <form id="channelForm">
-        <label>שם: <input type="text" id="name" required /></label><br />
-        <label>קישור: <input type="text" id="link" /></label><br />
-        <label>קטגוריה: <input type="text" id="category" /></label><br />
-        <label>תיאור: <textarea id="description"></textarea></label><br />
-        <button type="submit">שמור</button>
-      </form>
-    </div>
-  </div>
+  <button id="addChannelBtn">הוסף ערוץ</button>
 
   <script src="app.js"></script>
 </body>
