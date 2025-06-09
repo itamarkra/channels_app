@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>פרטי ערוץ</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <button onclick="window.history.back()">← חזור</button>
+  <h1 id="channelName"></h1>
+  <p><strong>קישור:</strong> <a id="channelLink" href="#" target="_blank" rel="noopener noreferrer"></a></p>
+  <p><strong>קטגוריה:</strong> <span id="channelCategory"></span></p>
+  <p><strong>תיאור:</strong></p>
+  <p id="channelDescription"></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="channel.js"></script>
+</body>
+</html>
