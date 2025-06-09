@@ -1,134 +1,106 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+// החלף את ה-URL וה-API KEY שלך כאן:
+const SUPABASE_URL = 'https://YOUR_SUPABASE_URL.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
 
-const SUPABASE_URL = 'https://okvgyimnvhjjidwlsyyf.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdmd5aW1udmhqamlkd2xzeXlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0Njc0OTIsImV4cCI6MjA2NTA0MzQ5Mn0.9PsxWDIEMB6sQbg7FMApZbOrslkKTytYExPmgBdCDK4'
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const channelsContainer = document.getElementById('channelsContainer')
-const channelInfo = document.getElementById('channelInfo')
-const channelDetails = document.getElementById('channelDetails')
-const categorySelect = document.getElementById('categorySelect')
-const addChannelForm = document.getElementById('addChannelForm')
-const channelForm = document.getElementById('channelForm')
+const channelsContainer = document.getElementById('channelsContainer');
+const categorySelect = document.getElementById('categorySelect');
+const showAddFormBtn = document.getElementById('showAddFormBtn');
+const addChannelFormDiv = document.getElementById('addChannelForm');
+const channelForm = document.getElementById('channelForm');
 
-let channels = []
+let channels = [];
 
-// טען את כל הערוצים מהדאטהבייס
 async function loadChannels() {
   const { data, error } = await supabase
     .from('channel')
     .select('*')
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error loading channels:', error)
-    return
+    alert('שגיאה בטעינת הערוצים: ' + error.message);
+    return;
   }
-
-  channels = data
-  renderChannels(channels)
-  populateCategories(channels)
+  channels = data;
+  populateCategories();
+  renderChannels();
 }
 
-// הצג את רשימת הערוצים, לפי קבוצה (קטגוריה)
-function renderChannels(channelsToRender) {
-  channelsContainer.innerHTML = ''
-  if (channelsToRender.length === 0) {
-    channelsContainer.innerHTML = '<p>לא נמצאו ערוצים</p>'
-    return
-  }
-
-  // קיבוץ לפי קטגוריה
-  const grouped = channelsToRender.reduce((acc, channel) => {
-    const cat = channel.category || 'אחר'
-    if (!acc[cat]) acc[cat] = []
-    acc[cat].push(channel)
-    return acc
-  }, {})
-
-  for (const category in grouped) {
-    const catDiv = document.createElement('div')
-    catDiv.innerHTML = `<h3>${category}</h3>`
-    grouped[category].forEach(ch => {
-      const chDiv = document.createElement('div')
-      chDiv.classList.add('channel-item')
-      chDiv.textContent = ch.name
-      chDiv.onclick = () => showChannelDetails(ch)
-      catDiv.appendChild(chDiv)
-    })
-    channelsContainer.appendChild(catDiv)
-  }
-}
-
-// הצג פרטי ערוץ בלחיצה
-function showChannelDetails(channel) {
-  channelDetails.style.display = 'block'
-  channelInfo.innerHTML = `
-    <p><strong>שם:</strong> ${channel.name}</p>
-    <p><strong>קישור:</strong> <a href="${channel.link}" target="_blank">${channel.link}</a></p>
-    <p><strong>קטגוריה:</strong> ${channel.category || '-'}</p>
-    <p><strong>תיאור:</strong> ${channel.description || '-'}</p>
-  `
-}
-
-function closeDetails() {
-  channelDetails.style.display = 'none'
-}
-
-// טען את הקטגוריות ל-dropdown בחיפוש
-function populateCategories(channels) {
-  const categories = [...new Set(channels.map(ch => ch.category).filter(Boolean))]
-  categorySelect.innerHTML = '<option value="">-- בחר קטגוריה --</option>'
+function populateCategories() {
+  const categories = [...new Set(channels.map(ch => ch.category).filter(c => c))];
+  categorySelect.innerHTML = '<option value="">-- בחר קטגוריה --</option>';
   categories.forEach(cat => {
-    const opt = document.createElement('option')
-    opt.value = cat
-    opt.textContent = cat
-    categorySelect.appendChild(opt)
-  })
+    const opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = cat;
+    categorySelect.appendChild(opt);
+  });
 }
 
-// סינון לפי קטגוריה
-categorySelect.addEventListener('change', () => {
-  const selected = categorySelect.value
-  if (!selected) {
-    renderChannels(channels)
+function renderChannels(filterCategory = '') {
+  channelsContainer.innerHTML = '';
+  let filtered = channels;
+  if (filterCategory) {
+    filtered = channels.filter(ch => ch.category === filterCategory);
+  }
+  if (filtered.length === 0) {
+    channelsContainer.innerHTML = '<p>לא נמצאו ערוצים</p>';
+    return;
+  }
+  filtered.forEach(ch => {
+    const div = document.createElement('div');
+    div.className = 'channel-item';
+    div.textContent = ch.name + (ch.category ? ` (${ch.category})` : '');
+    div.onclick = () => {
+      // מפנה לדף פרטי הערוץ עם ה-ID ב-URL
+      window.location.href = `channel.html?id=${ch.id}`;
+    };
+    channelsContainer.appendChild(div);
+  });
+}
+
+categorySelect.addEventListener('change', (e) => {
+  renderChannels(e.target.value);
+});
+
+showAddFormBtn.addEventListener('click', () => {
+  if (addChannelFormDiv.style.display === 'none' || addChannelFormDiv.style.display === '') {
+    addChannelFormDiv.style.display = 'block';
   } else {
-    renderChannels(channels.filter(ch => ch.category === selected))
+    addChannelFormDiv.style.display = 'none';
   }
-})
+});
 
-// הצג/הסתר טופס הוספת ערוץ
-function toggleAddChannelForm() {
-  addChannelForm.style.display = addChannelForm.style.display === 'none' ? 'block' : 'none'
-}
-
-// טיפול בשליחת טופס הוספת ערוץ
 channelForm.addEventListener('submit', async (e) => {
-  e.preventDefault()
-  const newChannel = {
-    name: document.getElementById('name').value.trim(),
-    link: document.getElementById('link').value.trim() || null,
-    category: document.getElementById('category').value.trim() || null,
-    description: document.getElementById('description').value.trim() || null,
-    created_at: new Date().toISOString()
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim();
+  const link = document.getElementById('link').value.trim();
+  const category = document.getElementById('category').value.trim();
+  const description = document.getElementById('description').value.trim();
+
+  if (!name) {
+    alert('אנא מלא שם לערוץ');
+    return;
   }
 
-  // הוספת הערוץ לסופרבייס
   const { data, error } = await supabase
     .from('channel')
-    .insert([newChannel])
+    .insert([{ name, link, category, description }]);
 
   if (error) {
-    alert('שגיאה בהוספת הערוץ: ' + error.message)
-    return
+    alert('שגיאה בשמירת הערוץ: ' + error.message);
+    return;
   }
 
-  // רענון הרשימה
-  await loadChannels()
-  toggleAddChannelForm()
-  channelForm.reset()
-})
+  // עדכון המקומי
+  channels.unshift(data[0]);
+  renderChannels(categorySelect.value);
+  addChannelFormDiv.style.display = 'none';
+  channelForm.reset();
+  alert('ערוץ נוסף בהצלחה!');
+});
 
-window.onload = () => {
-  loadChannels()
-}
+// טעינת הערוצים בתחילת הטעינה
+loadChannels();
