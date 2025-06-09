@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Itamarkra Channels</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <h1>ערוצי Itamarkra</h1>
@@ -12,7 +12,7 @@
   <div id="searchCategories">
     <label for="categorySelect">חפש לפי קטגוריה:</label>
     <select id="categorySelect">
-      <option value="">-- כל הקטגוריות --</option>
+      <option value="">-- בחר קטגוריה --</option>
     </select>
   </div>
 
@@ -21,8 +21,21 @@
     <div id="channelsContainer"></div>
   </div>
 
-  <button id="addChannelBtn">הוסף ערוץ</button>
+  <div id="addChannelSection">
+    <button id="showAddFormBtn">הוסף ערוץ</button>
+    <div id="addChannelForm" style="display:none;">
+      <h3>הוסף ערוץ חדש</h3>
+      <form id="channelForm">
+        <label>שם: <input type="text" id="name" required /></label>
+        <label>קישור: <input type="text" id="link" /></label>
+        <label>קטגוריה: <input type="text" id="category" /></label>
+        <label>תיאור: <textarea id="description"></textarea></label>
+        <button type="submit">שמור</button>
+      </form>
+    </div>
+  </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>
