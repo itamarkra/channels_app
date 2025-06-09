@@ -1,7 +1,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const SUPABASE_URL = 'https://YOUR_SUPABASE_URL.supabase.co'
-const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY'
+const SUPABASE_URL = 'https://okvgyimnvhjjidwlsyyf.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdmd5aW1udmhqamlkd2xzeXlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0Njc0OTIsImV4cCI6MjA2NTA0MzQ5Mn0.9PsxWDIEMB6sQbg7FMApZbOrslkKTytYExPmgBdCDK4'
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 const channelsContainer = document.getElementById('channelsContainer')
